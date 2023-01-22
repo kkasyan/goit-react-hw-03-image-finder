@@ -1,13 +1,13 @@
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-import { Modal } from './Modal/Modal';
+// import { Modal } from './Modal/Modal';
 
 import { Component } from 'react';
 
 import { ToastContainer } from 'react-toastify';
 
 import css from './app.module.css';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 export class App extends Component {
   state = {

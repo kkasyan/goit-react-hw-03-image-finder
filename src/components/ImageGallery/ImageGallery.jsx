@@ -6,7 +6,7 @@ import { SearchLoad } from './SearchLoad/SearchLoad';
 import { Wrap } from 'components/Loader/Wrap';
 
 import { getPhotos } from 'api/api';
-import { smoothScroll } from 'helpers/smoothScroll';
+// import { smoothScroll } from 'helpers/smoothScroll';
 
 export class ImageGallery extends Component {
   state = {

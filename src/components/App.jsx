@@ -11,8 +11,8 @@ import css from './app.module.css';
 export class App extends Component {
   state = {
     imageName: '',
-    image: null,
-    loading: false,
+    // image: null,
+    // loading: false,
   };
 
   handleFormSubmit = imageName => {

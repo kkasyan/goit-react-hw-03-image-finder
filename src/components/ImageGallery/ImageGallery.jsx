@@ -63,7 +63,7 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { image, error, status, imageName, photos, totalHits } = this.state;
+    const { error, status, photos, totalHits } = this.state;
     const { getPhotos, loadMore } = this;
 
     if (status === 'idle') {

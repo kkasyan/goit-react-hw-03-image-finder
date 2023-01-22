@@ -20,7 +20,7 @@ export class App extends Component {
   };
 
   render() {
-    const { imageName, image, loading } = this.state;
+    const { imageName } = this.state;
     const { handleFormSubmit } = this;
 
     return (

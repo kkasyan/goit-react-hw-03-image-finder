@@ -7,6 +7,7 @@ import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import css from './app.module.css';
+import PropTypes from 'prop-types';
 
 export class App extends Component {
   state = {
@@ -14,6 +15,8 @@ export class App extends Component {
     // image: null,
     // loading: false,
   };
+
+  static propTypes = {};
 
   handleFormSubmit = imageName => {
     this.setState({ imageName });
@@ -27,7 +30,7 @@ export class App extends Component {
       <div className={css.app}>
         <Searchbar onSubmit={handleFormSubmit} />
         <ImageGallery imageName={imageName} />
-        <Modal />
+        {/* <Modal /> */}
         <ToastContainer />
       </div>
     );

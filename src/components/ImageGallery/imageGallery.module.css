@@ -10,3 +10,8 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.idleText {
+  text-align: center;
+  font-size: 20px;
+}

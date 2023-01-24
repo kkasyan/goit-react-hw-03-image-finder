@@ -1,6 +1,5 @@
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
-// import { Modal } from './Modal/Modal';
 
 import { Component } from 'react';
 
@@ -30,7 +29,6 @@ export class App extends Component {
       <div className={css.app}>
         <Searchbar onSubmit={handleFormSubmit} />
         <ImageGallery imageName={imageName} />
-        {/* <Modal /> */}
         <ToastContainer />
       </div>
     );

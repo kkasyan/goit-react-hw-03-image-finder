@@ -4,8 +4,10 @@ import { Component } from 'react';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { SearchLoad } from './SearchLoad/SearchLoad';
 import { Wrap } from 'components/Loader/Wrap';
+import { Modal } from 'components/Modal/Modal';
 
 import { getPhotos } from 'api/api';
+
 // import { smoothScroll } from 'helpers/smoothScroll';
 
 export class ImageGallery extends Component {
@@ -13,11 +15,10 @@ export class ImageGallery extends Component {
     page: 1,
     totalHits: null,
     photos: [],
-    // image: null,
-    // loading: false,
     error: null,
     status: 'idle',
-    modalOpen: null,
+    modalOpen: false,
+    modalImage: null,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -29,12 +30,7 @@ export class ImageGallery extends Component {
     if (prevName !== newName) {
       this.reset();
       this.setState({
-        // loading: true,
-        // page: 1,
-        // totalHits: null,
-        // photos: [],
         status: 'pending',
-        // image: null,
       });
 
       if (prevName !== newName || (prevPage !== newPage && newPage !== 1)) {
@@ -44,7 +40,6 @@ export class ImageGallery extends Component {
           if (pphotos.totalHits === 0) {
             return this.setState({ status: 'error' });
           }
-          console.log('resolved');
           this.setState(prevState => ({
             status: 'resolved',
             totalHits: pphotos.totalHits,
@@ -56,7 +51,6 @@ export class ImageGallery extends Component {
           // }
         } catch (error) {
           this.setState({ error, status: 'rejected' });
-          console.log(error);
         }
       }
     }
@@ -69,8 +63,12 @@ export class ImageGallery extends Component {
     console.log('click');
   };
 
+  toggleModal = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
+  };
+
   closeModal = () => {
-    this.setState({ modalOpen: null });
+    this.setState({ modalOpen: false, modalImage: null });
   };
 
   reset = () => {
@@ -78,12 +76,20 @@ export class ImageGallery extends Component {
       page: 1,
       totalHits: null,
       photos: [],
+      modalOpen: false,
     });
   };
 
+  getImage = imageURL => {
+    this.setState({
+      modalImage: imageURL,
+    });
+    this.toggleModal();
+  };
+
   render() {
-    const { error, status, photos, totalHits } = this.state;
-    const { getPhotos, loadMore, newPage, prevPage } = this;
+    const { error, status, photos, totalHits, modalImage } = this.state;
+    const { loadMore, newPage, prevPage, toggleModal, getImage } = this;
 
     if (status === 'idle') {
       return (
@@ -101,19 +107,26 @@ export class ImageGallery extends Component {
       return (
         <>
           <ul className={css.gallery}>
-            {photos.map(({ id, webformatURL, largeImageURl }) => {
+            {photos.map(({ id, webformatURL, largeImageURL }) => {
               return (
                 <ImageGalleryItem
                   key={id}
-                  largeImageURl={largeImageURl}
+                  largeImageURL={largeImageURL}
                   webformatURL={webformatURL}
-                  getPhotos={getPhotos}
+                  getImage={getImage}
                 />
               );
             })}
           </ul>
           {totalHits > 12 && (
             <SearchLoad loadMore={loadMore} text="Load more" />
+          )}
+          {modalImage !== null && (
+            <Modal
+              image={modalImage}
+              toggleModal={toggleModal}
+              closeModal={this.closeModal}
+            />
           )}
         </>
       );

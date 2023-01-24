@@ -8,6 +8,8 @@ import { Modal } from 'components/Modal/Modal';
 
 import { getPhotos } from 'api/api';
 
+import PropTypes from 'prop-types';
+
 // import { smoothScroll } from 'helpers/smoothScroll';
 
 export class ImageGallery extends Component {
@@ -19,6 +21,13 @@ export class ImageGallery extends Component {
     status: 'idle',
     modalOpen: false,
     modalImage: null,
+  };
+
+  static propTypes = {
+    imageName: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    closeModal: PropTypes.func,
+    toggleModal: PropTypes.func,
   };
 
   async componentDidUpdate(prevProps, prevState) {
@@ -60,7 +69,6 @@ export class ImageGallery extends Component {
     this.setState({
       page: this.state.page + 1,
     });
-    console.log('click');
   };
 
   toggleModal = () => {
@@ -134,9 +142,7 @@ export class ImageGallery extends Component {
 
     if (status === 'rejected') {
       return (
-        <div>
-          Sorry, there is something wrong here... Please try again! {error}
-        </div>
+        <p>Sorry, there is something wrong here... Please try again! {error}</p>
       );
     }
   }

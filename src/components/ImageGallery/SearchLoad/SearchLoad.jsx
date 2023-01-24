@@ -12,4 +12,5 @@ export const SearchLoad = ({ type, text, loadMore }) => {
 SearchLoad.propTypes = {
   type: PropTypes.string,
   text: PropTypes.string,
+  loadMore: PropTypes.func,
 };

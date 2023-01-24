@@ -6,16 +6,17 @@ import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import css from './app.module.css';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 export class App extends Component {
   state = {
     imageName: '',
-    // image: null,
-    // loading: false,
   };
 
-  static propTypes = {};
+  static propTypes = {
+    handleFormSubmit: PropTypes.func,
+    imageName: PropTypes.string,
+  };
 
   handleFormSubmit = imageName => {
     this.setState({ imageName });

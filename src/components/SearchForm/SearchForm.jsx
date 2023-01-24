@@ -4,10 +4,18 @@ import { Component } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import PropTypes from 'prop-types';
+
 import { Button } from 'components/Button/Button';
 
 export class SearchForm extends Component {
   state = { imageName: '' };
+
+  static propTypes = {
+    handleNameChange: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    imageName: PropTypes.string,
+  };
 
   handleNameChange = e => {
     this.setState({ imageName: e.currentTarget.value.toLowerCase() });

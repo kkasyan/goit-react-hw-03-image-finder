@@ -1,4 +1,3 @@
-import { toFormData } from '../../../node_modules/axios/index';
 import css from './imageGalleryItem.module.css';
 
 export const ImageGalleryItem = ({

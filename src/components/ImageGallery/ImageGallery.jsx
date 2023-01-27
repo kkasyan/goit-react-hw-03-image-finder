@@ -42,10 +42,10 @@ export class ImageGallery extends Component {
         status: 'pending',
       });
 
-      if (prevName !== newName || (prevPage !== newPage && newPage !== 1)) {
+      if (prevName !== newName || prevPage !== newPage) {
         try {
           const pphotos = await getPhotos(newName, newPage);
-
+          console.log('update');
           if (pphotos.totalHits === 0) {
             return this.setState({ status: 'error' });
           }
@@ -54,7 +54,7 @@ export class ImageGallery extends Component {
             totalHits: pphotos.totalHits,
             photos: [...prevState.photos, ...pphotos.hits],
           }));
-
+          console.log('posle if');
           // if (newPage !== 1) {
           //   smoothScroll();
           // }

@@ -10,11 +10,12 @@ import { getPhotos } from 'api/api';
 
 import PropTypes from 'prop-types';
 
-// import { smoothScroll } from 'helpers/smoothScroll';
+import { smoothScroll } from 'helpers/smoothScroll';
 
 export class ImageGallery extends Component {
   state = {
     page: 1,
+    totalPages: 0,
     totalHits: null,
     photos: [],
     error: null,
@@ -41,26 +42,27 @@ export class ImageGallery extends Component {
       this.setState({
         status: 'pending',
       });
+    }
 
-      if (prevName !== newName || prevPage !== newPage) {
-        try {
-          const pphotos = await getPhotos(newName, newPage);
-          console.log('update');
-          if (pphotos.totalHits === 0) {
-            return this.setState({ status: 'error' });
-          }
-          this.setState(prevState => ({
-            status: 'resolved',
-            totalHits: pphotos.totalHits,
-            photos: [...prevState.photos, ...pphotos.hits],
-          }));
-          console.log('posle if');
-          // if (newPage !== 1) {
-          //   smoothScroll();
-          // }
-        } catch (error) {
-          this.setState({ error, status: 'rejected' });
+    if (newPage !== 1) {
+      smoothScroll();
+    }
+
+    if ((newName && prevName !== newName) || prevPage < newPage) {
+      try {
+        const newPhotos = await getPhotos(newName, newPage);
+        if (newPhotos.totalHits === 0 || newPhotos.totalHits === null) {
+          return this.setState({ status: 'rejected' });
         }
+        const totalPages = Math.ceil(newPhotos.totalHits / 12);
+        this.setState(prevState => ({
+          status: 'resolved',
+          totalHits: newPhotos.totalHits,
+          photos: [...prevState.photos, ...newPhotos.hits],
+          totalPages: totalPages,
+        }));
+      } catch (error) {
+        this.setState({ error, status: 'rejected' });
       }
     }
   }
@@ -96,7 +98,7 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { error, status, photos, totalHits, modalImage } = this.state;
+    const { status, photos, modalImage, page, totalPages } = this.state;
     const { loadMore, newPage, prevPage, toggleModal, getImage } = this;
 
     if (status === 'idle') {
@@ -126,7 +128,7 @@ export class ImageGallery extends Component {
               );
             })}
           </ul>
-          {totalHits > 12 && (
+          {totalPages > page && (
             <SearchLoad loadMore={loadMore} text="Load more" />
           )}
           {modalImage !== null && (
@@ -142,7 +144,9 @@ export class ImageGallery extends Component {
 
     if (status === 'rejected') {
       return (
-        <p>Sorry, there is something wrong here... Please try again! {error}</p>
+        <p className={css.idleText}>
+          Sorry, there is something wrong here... Please try again!
+        </p>
       );
     }
   }

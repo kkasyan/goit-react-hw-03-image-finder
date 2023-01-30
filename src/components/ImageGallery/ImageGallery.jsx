@@ -44,10 +44,6 @@ export class ImageGallery extends Component {
       });
     }
 
-    if (newPage !== 1) {
-      smoothScroll();
-    }
-
     if ((newName && prevName !== newName) || prevPage < newPage) {
       try {
         const newPhotos = await getPhotos(newName, newPage);
@@ -55,12 +51,17 @@ export class ImageGallery extends Component {
           return this.setState({ status: 'rejected' });
         }
         const totalPages = Math.ceil(newPhotos.totalHits / 12);
-        this.setState(prevState => ({
-          status: 'resolved',
-          totalHits: newPhotos.totalHits,
-          photos: [...prevState.photos, ...newPhotos.hits],
-          totalPages: totalPages,
-        }));
+        this.setState(
+          prevState => ({
+            status: 'resolved',
+            totalHits: newPhotos.totalHits,
+            photos: [...prevState.photos, ...newPhotos.hits],
+            totalPages: totalPages,
+          }),
+          () => {
+            smoothScroll();
+          }
+        );
       } catch (error) {
         this.setState({ error, status: 'rejected' });
       }
